@@ -58,6 +58,47 @@ document.addEventListener('DOMContentLoaded', () => {
           e.target.parentElement.innerHTML = renderJoinForm(e.target.dataset.id, collab2);
         })
     }
+
+    if (e.target.innerText === 'New Collab') {
+      // Get the modal
+      const modal = e.target.parentElement.querySelector('#newCollab')
+
+      // Get the <span> element that closes the modal
+      const span = e.target.parentElement.querySelector('SPAN');
+      const info = e.target.parentElement.querySelector('#newCollabInfo')
+
+      // When the user clicks on the button, open the modal
+        modal.style.display = "block";
+
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function() {
+        modal.style.display = "none";
+      }
+
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+
+      // render new collab form
+      info.innerHTML = `
+      <form  id='new-collab-form' method="post">
+        <div>
+          <label for="name">Collab name:</label>
+          <input type="text" id="name" name="user_name" required>
+        </div>
+        <div>
+          <label for="image">Image:</label>
+          <input type="text" id="image" required>
+        </div>
+        <div>
+          ${newSpecials()}
+        </div>
+        <input type='submit' value='Create Collab'></input>
+      </form>`
+    }
   })
 
   document.addEventListener('submit', e => {
@@ -85,40 +126,83 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         body: JSON.stringify(user)
       })// end of POST fetch to users
-        .then(r => r.json())
-        .then(newUser => {
-          // fetch POST to user_collabs
-          fetch('http://localhost:3000/api/v1/user_collabs', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-              user_id: newUser.id,
-              collab_id: e.target.dataset.id
-            })
-          }) // end of POST fetch
+      .then(r => r.json())
+      .then(newUser => {
+        // fetch POST to user_collabs
+        fetch('http://localhost:3000/api/v1/user_collabs', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            user_id: newUser.id,
+            collab_id: e.target.dataset.id
+          })
+        }) // end of POST fetch
 
-          // fetch PATCH to collab to decrement specialty requirement
-          fetch(`http://localhost:3000/api/v1/collabs/${e.target.dataset.id}`, {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-              [specialty]: updatedSpecNum
-            })
-          }) // end of PATCH fetch
-          .then(r => fetchCollabs())
+        // fetch PATCH to collab to decrement specialty requirement
+        fetch(`http://localhost:3000/api/v1/collabs/${e.target.dataset.id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            [specialty]: updatedSpecNum
+          })
+        }) // end of PATCH fetch
+        .then(r => fetchCollabs())
 
 
-        }) //end of then new user
+      }) //end of then new user
 
-      }// end of join-form submit
+    }// end of join-form submit
 
+    if (e.target.id === 'new-collab-form') {
+      e.preventDefault()
+      let collabName = e.target.name.value
+      let collabImage = e.target.image.value
+      let rappers = parseInt(e.target.rappers.value)
+      let drummers = parseInt(e.target.drummers.value)
+      let basses = parseInt(e.target.basses.value)
+      let singers = parseInt(e.target.singers.value)
+      let keyboards = parseInt(e.target.keyboards.value)
+      let beatboxers = parseInt(e.target.beatboxers.value)
+      let producers = parseInt(e.target.producers.value)
+      let guitars = parseInt(e.target.guitars.value)
+      console.log(rappers, drummers, singers, keyboards);
+
+      let newCollab = {name: collabName, image: collabImage, rappers, drummers, basses, singers, keyboards, beatboxers, producers, guitars}
+
+      fetch(URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(newCollab)
+      })
+    }
   })
+
+  function specNumerales(spec){
+    arr = [0,1,2,3,4,5,6,7,8,9,10]
+    return arr.map(num => {
+      return `<option value=${num}>${num}</option>\n`
+    }).join(``)
+  }
+
+  function newSpecials(){
+    arr = ["rappers", "drummers", "basses","singers", "keyboards", "beatboxers","producers","guitars"]
+    return arr.map(spec =>{
+        return `<label>${spec}:</label>
+        <select id=${spec}>
+         ${specNumerales(spec)}
+        </select><br>`
+    }).join('')
+  }
+
 
   function fetchCollabs() {
     fetch(URL)
