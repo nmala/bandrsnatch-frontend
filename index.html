@@ -14,15 +14,23 @@
   <body>
     <header>
       <nav class="nav nav-pills flex-column flex-sm-row">
-        <a class="flex-sm-fill text-sm-center nav-link active" href="#">Active</a>
+        <a class="flex-sm-fill text-sm-center nav-link active" href="#">All Collabs</a>
         <a class="flex-sm-fill text-sm-center nav-link" href="#">New Collab</a>
-        <a class="flex-sm-fill text-sm-center nav-link" href="#">Link</a>
+        <!-- <a class="flex-sm-fill text-sm-center nav-link" href="#">Link</a> -->
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sort by specialty
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+          </div>
+        </div>
         <!-- The Modal -->
-        <div id="newCollab" class="modal">
+        <div id="newCollab" class="modal-card">
           <!-- Modal content -->
-          <div class="modal-content">
+          <div class="modal-content-card">
           <span class="close">&times;</span>
-          <div id='newCollabInfo'>
+          <div id='newCollabInfo' class='mother-div'>
             <p></p>
           </div>
         </div>
@@ -32,6 +40,13 @@
     <!-- Collab Index -->
     <div id="collab-container" class="card-deck">
 
+    </div>
+
+    <!-- Loaded page background movie -->
+    <div id="video_container">
+      <video autoplay muted loop>
+        <source src="assets/mixing_deck.mov" type="video/mp4">
+      </video>
     </div>
 
 

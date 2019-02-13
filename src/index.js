@@ -2,9 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const collabContainer = document.querySelector('#collab-container')
   const URL = 'http://localhost:3000/api/v1/collabs'
-  fetchCollabs();
+  const dropdownNavBar = document.querySelector('.dropdown-menu')
+  const video = document.querySelector('#video_container')
 
-
+  dropdownNavBar.innerHTML = newSpecials(2)
 
   collabContainer.addEventListener('click', e => {
     if (e.target.tagName === 'BUTTON') {
@@ -37,13 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
       fetch(`${URL}/${e.target.dataset.id}`)
         .then(r => r.json())
         .then(c => {
-          info.innerHTML = `
-          <h1>Group name: ${c.name}</h1>
-          <img src=${c.image} alt="..." height='100' width='100'>
-          <br>
-          <div id='button-form'>
-            <button data-id=${c.id} id='join-request'>Request to join</button>
-          </div>`
+          info.innerHTML = collabInfoPage(c)
         })
     }
   })
@@ -84,20 +79,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // render new collab form
       info.innerHTML = `
-      <form  id='new-collab-form' method="post">
-        <div>
-          <label for="name">Collab name:</label>
-          <input type="text" id="name" name="user_name" required>
-        </div>
-        <div>
-          <label for="image">Image:</label>
-          <input type="text" id="image" required>
-        </div>
-        <div>
-          ${newSpecials()}
-        </div>
-        <input type='submit' value='Create Collab'></input>
-      </form>`
+      <div>
+        <form  id='new-collab-form' method="post">
+          <div>
+            <label for="name">Collab name:</label>
+            <input type="text" id="name" name="user_name" required>
+          </div>
+          <div>
+            <label for="image">Image:</label>
+            <input type="text" id="image" required>
+          </div>
+          <div>
+            ${newSpecials(1)}
+          </div>
+          <input type='submit' value='Create Collab'></input>
+        </form>
+      </div>`
+    }
+
+    if (e.target.innerText === 'All Collabs') {
+      fetchCollabs();
+    }
+
+    if (e.target.innerText === 'RAPPERS') {
+      fetchSortedCollabs('rappers')
+    }
+    if (e.target.innerText === 'DRUMMERS') {
+      fetchSortedCollabs('drummers')
+    }
+    if (e.target.innerText === 'BASSES') {
+      fetchSortedCollabs('basses')
+    }
+    if (e.target.innerText === 'SINGERS') {
+      fetchSortedCollabs('singers')
+    }
+    if (e.target.innerText === 'KEYBOARDS') {
+      fetchSortedCollabs('keyboards')
+    }
+    if (e.target.innerText === 'BEATBOXERS') {
+      fetchSortedCollabs('beatboxers')
+    }
+    if (e.target.innerText === 'PRODUCERS') {
+      fetchSortedCollabs('producers')
+    }
+    if (e.target.innerText === 'GUITARS') {
+      fetchSortedCollabs('guitars')
     }
   })
 
@@ -171,9 +197,10 @@ document.addEventListener('DOMContentLoaded', () => {
       let beatboxers = parseInt(e.target.beatboxers.value)
       let producers = parseInt(e.target.producers.value)
       let guitars = parseInt(e.target.guitars.value)
-      console.log(rappers, drummers, singers, keyboards);
 
-      let newCollab = {name: collabName, image: collabImage, rappers, drummers, basses, singers, keyboards, beatboxers, producers, guitars}
+      let modal = document.querySelector('#newCollab')
+
+      let newCollab = {name: collabName, image: collabImage, rappers, drummers, basses, singers, keyboards, beatboxers: beatboxers, producers, guitars}
 
       fetch(URL, {
         method: 'POST',
@@ -182,7 +209,11 @@ document.addEventListener('DOMContentLoaded', () => {
           'Accept': 'application/json'
         },
         body: JSON.stringify(newCollab)
-      })
+      }) // end of POST
+        .then(r => {
+          modal.style.display = "none"
+          fetchCollabs()
+        })
     }
   })
 
@@ -193,18 +224,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }).join(``)
   }
 
-  function newSpecials(){
+  function newSpecials(x){ // function has 2 options, each accessible by number
     arr = ["rappers", "drummers", "basses","singers", "keyboards", "beatboxers","producers","guitars"]
-    return arr.map(spec =>{
-        return `<label>${spec}:</label>
-        <select id=${spec}>
-         ${specNumerales(spec)}
-        </select><br>`
-    }).join('')
+    if (x === 1) {
+      return arr.map(spec =>{
+          return `<label>${spec}:</label>
+          <select id=${spec}>
+           ${specNumerales(spec)}
+          </select><br>`
+      }).join('')
+    } else if (x === 2) {
+      return arr.map(spec => {
+        return `<a class="dropdown-item" href="#">${spec.toUpperCase()}</a>`
+      }).join(``)
+    }
   }
 
-
   function fetchCollabs() {
+    video.style.display = 'none'
     fetch(URL)
       .then(r => r.json())
       .then(collabs => {
@@ -214,6 +251,21 @@ document.addEventListener('DOMContentLoaded', () => {
           if(a.name > b.name) {return 1}
           return 0
         })
+        renderAllCollabs(sorted)
+      })
+  }
+
+  function fetchSortedCollabs(spec) {
+    fetch(URL)
+      .then(r => r.json())
+      .then(collabs => {
+        let collabArray = Array.from(collabs)
+
+        let sorted = collabArray.sort((a,b) => {
+          if(a[spec] < b[spec]) {return 1}
+          if(a[spec] > b[spec]) {return -1}
+          return 0
+        })
 
         renderAllCollabs(sorted)
       })
@@ -221,7 +273,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderCollab(c) {
     bigString = ``
-    console.log(c.drummers);
     if (c.rappers !== 0) {
       bigString += `<p id="rappers"> Rappers needed: ${c.rappers}</p>`
     }
@@ -248,6 +299,9 @@ document.addEventListener('DOMContentLoaded', () => {
       bigString += `<p id="producers"> Producers needed: ${c.producers}</p>`
     }
 
+    let lastUpdated = new Date(c.updated_at).toLocaleString("en-US", {timeZone: "America/New_York"})
+
+    // MAIN CARD MODAL
     return `
     <div class="card">
       <img src=${c.image} class="card-img-top" alt="...">
@@ -257,15 +311,15 @@ document.addEventListener('DOMContentLoaded', () => {
           ${bigString}
         </div>
 
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        <p class="card-text"><small class="text-muted">Last signup: ${lastUpdated}</small></p>
         <!-- Trigger/Open The Modal -->
         <button data-id=${c.id} id="myBtn">More info</button>
 
         <!-- The Modal -->
-        <div data-id=${c.id} id="myModal" class="modal">
+        <div data-id=${c.id} id="myModal" class="modal-card">
 
           <!-- Modal content -->
-          <div class="modal-content">
+          <div class="modal-content-card">
           <span class="close">&times;</span>
           <div id='info'>
             <p></p>
@@ -288,6 +342,40 @@ document.addEventListener('DOMContentLoaded', () => {
         return `
         <h1>${c.name}</h1>`
       })
+  }
+
+  function collabInfoPage(c) {
+    let rappers = c.users.filter(u => u.specialty === 'rappers').map(u => ` ${u.name}`)
+    let singers = c.users.filter(u => u.specialty === 'singers').map(u => ` ${u.name}`)
+    let guitars = c.users.filter(u => u.specialty === 'guitars').map(u => ` ${u.name}`)
+    let drummers = c.users.filter(u => u.specialty === 'drummers').map(u => ` ${u.name}`)
+    let basses = c.users.filter(u => u.specialty === 'basses').map(u => ` ${u.name}`)
+    let producers = c.users.filter(u => u.specialty === 'producers').map(u => ` ${u.name}`)
+    let beatboxers = c.users.filter(u => u.specialty === 'beatboxers').map(u => ` ${u.name}`)
+    let keyboards = c.users.filter(u => u.specialty === 'keyboards').map(u => ` ${u.name}`)
+
+    // MORE INFO MODAL
+    return `
+    <h1>Collab name: ${c.name}</h1>
+    <br>
+    <div class='mother-div'>
+    <div id='collab-image'>
+      <img class='more-info-images' src=${c.image} alt="..." height=auto width=auto>
+    </div>
+    <div id='collab-people'>
+      <p><b>Rappers</b>: ${rappers.length > 0 ? rappers : 'None'}</p>
+      <p><b>Singers</b>: ${singers.length > 0 ? singers : 'None'}</p>
+      <p><b>Guitars</b>: ${guitars.length > 0 ? guitars : 'None'}</p>
+      <p><b>Drummers</b>: ${drummers.length > 0 ? drummers : 'None'}</p>
+      <p><b>Basses</b>: ${basses.length > 0 ? basses : 'None'}</p>
+      <p><b>Keyboards</b>: ${keyboards.length > 0 ? keyboards : 'None'}</p>
+      <p><b>Beatboxers</b>: ${beatboxers.length > 0 ? beatboxers : 'None'}</p>
+      <p><b>Producers</b>: ${producers.length > 0 ? producers : 'None'}</p>
+    </div>
+    <div id='button-form'>
+      <button data-id=${c.id} id='join-request'>Request to join</button>
+    </div>
+    </div>`
   }
 
   function renderJoinForm(id, arr) {
