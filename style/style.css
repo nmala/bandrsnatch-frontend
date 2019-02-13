@@ -88,3 +88,15 @@
 .card-img-top {
   border-radius: 10px;
 }
+
+.card {
+  margin-bottom: 2rem !important
+}
+
+#card-deck {
+  margin: 2rem !important
+}
+
+.video-container {
+  margin: 0
+}

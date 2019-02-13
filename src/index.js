@@ -7,6 +7,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   dropdownNavBar.innerHTML = newSpecials(2)
 
+  // STRETCH GOAL - IMAGE RENDER DURING NEW COLLAB FORM
+  // let newCollabImage = document.querySelector('#image')
+  // if (newCollabImage !== null) {
+  //   newCollabImage.addEventListener('input', e => {
+  //     const newCollabInfo = document.querySelector('#newCollabInfo')
+  //     newCollabInfo.innerHTML += `<img class='more-info-images' src=${e.target.value}>`
+  //     console.log(e.target.value);
+  //   })
+  // }
+
   collabContainer.addEventListener('click', e => {
     if (e.target.tagName === 'BUTTON') {
 
@@ -96,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </form>
       </div>`
     }
+
 
     if (e.target.innerText === 'All Collabs') {
       fetchCollabs();
@@ -201,6 +212,9 @@ document.addEventListener('DOMContentLoaded', () => {
       let modal = document.querySelector('#newCollab')
 
       let newCollab = {name: collabName, image: collabImage, rappers, drummers, basses, singers, keyboards, beatboxers: beatboxers, producers, guitars}
+
+      // const newCollabInfo = document.querySelector('#newCollabInfo')
+      // newCollabInfo.innerHTML += collabImage
 
       fetch(URL, {
         method: 'POST',
