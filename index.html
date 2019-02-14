@@ -12,30 +12,9 @@
 
   </head>
   <body>
-    <!-- <header> -->
-      <nav class="nav nav-pills flex-column flex-sm-row">
-        <a class="flex-sm-fill text-sm-center nav-link active" href="#">All Collabs</a>
-        <a class="flex-sm-fill text-sm-center nav-link" href="#">New Collab</a>
-        <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Sort by specialty
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-          </div>
-        </div>
-        <!-- The Modal -->
-        <div id="newCollab" class="modal-card">
-          <!-- Modal content -->
-          <div class="modal-content-card">
-          <span class="close">&times;</span>
-          <div id='newCollabInfo' class='mother-div'>
-            <p></p>
-          </div>
-        </div>
-      </nav>
+    <header>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="#">Band 'Я' Snatch</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -43,29 +22,25 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="#" id='view-all-collabs'>All Collabs <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
+              <a class="nav-link" href="#">New Collab</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
+                Sort by specialty
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
+
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">Something else here</a>
               </div>
             </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
           </form>
         </div>
         <!-- The Modal -->
@@ -78,12 +53,17 @@
           </div>
         </div>
       </nav>
-    <!-- </header> -->
+      <!-- The Modal -->
+      <div id="newCollab" class="modal-card">
+        <!-- Modal content -->
+        <div class="modal-content-card">
+        <span class="close">&times;</span>
+        <div id='newCollabInfo' class='mother-div'>
+          <p></p>
+        </div>
+      </div>
+    </header>
 
-    <!-- Collab Index -->
-    <div id="collab-container" class="card-deck" id='card-deck'>
-
-    </div>
 
     <!-- Loaded page background movie -->
     <div id="video_container">
@@ -92,6 +72,10 @@
       </video>
     </div>
 
+    <!-- Collab Index -->
+    <div id="collab-container" class="card-deck">
+
+    </div>
 
     <!-- Optional JavaScript -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

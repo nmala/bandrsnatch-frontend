@@ -4,8 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const URL = 'http://localhost:3000/api/v1/collabs'
   const dropdownNavBar = document.querySelector('.dropdown-menu')
   const video = document.querySelector('#video_container')
+  const search = document.querySelector('.form-control')
 
   dropdownNavBar.innerHTML = newSpecials(2)
+  search.style.display = 'none'
 
   // STRETCH GOAL - IMAGE RENDER DURING NEW COLLAB FORM
   // let newCollabImage = document.querySelector('#image')
@@ -66,11 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (e.target.innerText === 'New Collab') {
       // Get the modal
-      const modal = e.target.parentElement.querySelector('#newCollab')
+      const modal = document.querySelector('#newCollab')
 
       // Get the <span> element that closes the modal
-      const span = e.target.parentElement.querySelector('SPAN');
-      const info = e.target.parentElement.querySelector('#newCollabInfo')
+      const span = modal.querySelector('SPAN');
+      const info = modal.querySelector('#newCollabInfo')
 
       // When the user clicks on the button, open the modal
         modal.style.display = "block";
@@ -91,24 +93,29 @@ document.addEventListener('DOMContentLoaded', () => {
       info.innerHTML = `
       <div>
         <form  id='new-collab-form' method="post">
-          <div>
-            <label for="name">Collab name:</label>
-            <input type="text" id="name" name="user_name" required>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">Collab Name</span>
+            </div>
+            <input type="text" id='name' class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
           </div>
-          <div>
-            <label for="image">Image:</label>
-            <input type="text" id="image" required>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">Image</span>
+            </div>
+            <input type="text" id='image' class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
           </div>
           <div>
             ${newSpecials(1)}
           </div>
-          <input type='submit' value='Create Collab'></input>
+          <input type='submit' class='btn btn-outline-danger collab-buttons' value='Create Collab'></input>
         </form>
       </div>`
     }
 
 
-    if (e.target.innerText === 'All Collabs') {
+    if (e.target.id === 'view-all-collabs') {
+      search.style.display = ''
       fetchCollabs();
     }
 
@@ -242,10 +249,11 @@ document.addEventListener('DOMContentLoaded', () => {
     arr = ["rappers", "drummers", "basses","singers", "keyboards", "beatboxers","producers","guitars"]
     if (x === 1) {
       return arr.map(spec =>{
-          return `<label>${spec}:</label>
-          <select id=${spec}>
+          return `
+          <select class='custom-select' id=${spec}>
+          <option selected>${spec}</option>
            ${specNumerales(spec)}
-          </select><br>`
+          </select><br><br>`
       }).join('')
     } else if (x === 2) {
       return arr.map(spec => {
@@ -266,10 +274,16 @@ document.addEventListener('DOMContentLoaded', () => {
           return 0
         })
         renderAllCollabs(sorted)
+        return sorted
+      })
+      .then(r => {
+        return captureSearch(r)
       })
   }
 
   function fetchSortedCollabs(spec) {
+    video.style.display = 'none'
+    search.style.display = ''
     fetch(URL)
       .then(r => r.json())
       .then(collabs => {
@@ -280,65 +294,68 @@ document.addEventListener('DOMContentLoaded', () => {
           if(a[spec] > b[spec]) {return -1}
           return 0
         })
-
         renderAllCollabs(sorted)
+        return sorted
       })
+      .then(r => captureSearch(r))
   }
 
   function renderCollab(c) {
-    bigString = ``
+    bigString = `<ul style='list-style-type:none'>`
     if (c.rappers !== 0) {
-      bigString += `<p id="rappers"> Rappers needed: ${c.rappers}</p>`
+      bigString += `<li id="rappers">🎙 Rappers: ${c.rappers}</li>`
     }
     if (c.drummers !== 0) {
-      // bigString += `Drummers needed: ${c.drummers}\n`
-      bigString += `<p id="drummers"> Drummers needed: ${c.drummers}</p>`
+      bigString += `<li id="drummers">🥁 Drummers: ${c.drummers}</li>`
     }
     if (c.guitars !== 0) {
-      bigString += `<p id="guitars"> Guitars needed: ${c.guitars}</p>`
+      bigString += `<li id="guitars">🎸 Guitars: ${c.guitars}</li>`
     }
     if (c.basses !== 0) {
-      bigString += `<p id="basses"> Basses needed: ${c.basses}</p>`
+      bigString += `<li id="basses">🐟 Basses: ${c.basses}</li>`
     }
     if (c.keyboards !== 0) {
-      bigString += `<p id="keyboards"> Keyboards needed: ${c.keyboards}</p>`
+      bigString += `<li id="keyboards">🎹 Keyboards: ${c.keyboards}</li>`
     }
     if (c.singers !== 0) {
-    bigString += `<p id="singers"> Singers needed: ${c.singers}</p>`
+    bigString += `<li id="singers">🎤 Singers: ${c.singers}</li>`
     }
     if (c.beatboxers !== 0) {
-      bigString += `<p id="beatboxers"> Beatboxers needed: ${c.beatboxers}</p>`
+      bigString += `<li id="beatboxers">🎵 Beatboxers: ${c.beatboxers}</li>`
     }
     if (c.producers !== 0) {
-      bigString += `<p id="producers"> Producers needed: ${c.producers}</p>`
+      bigString += `<li id="producers">🎧 Producers: ${c.producers}</li>`
     }
+    bigString += `</ul>`
 
     let lastUpdated = new Date(c.updated_at).toLocaleString("en-US", {timeZone: "America/New_York"})
 
     // MAIN CARD MODAL
     return `
-    <div class="card">
+    <div class="card shadow p-3 mb-5 bg-white rounded">
       <img src=${c.image} class="card-img-top" alt="...">
       <div class="card-body">
-        <h5 class="card-title">${c.name}</h5>
+        <h3 class="card-title">${c.name}</h3>
+        <hr>
         <div id='specialties-${c.id}' class="card-text">
+          <label><b>Artists Needed:</b></label>
           ${bigString}
         </div>
 
-        <p class="card-text"><small class="text-muted">Last signup: ${lastUpdated}</small></p>
-        <!-- Trigger/Open The Modal -->
-        <button data-id=${c.id} id="myBtn">More info</button>
+          <p class="card-text"><small class="text-muted">Last signup: ${lastUpdated}</small></p>
+          <!-- Trigger/Open The Modal -->
+          <button class='btn btn-outline-danger collab-buttons' data-id=${c.id} id="myBtn">More info</button>
 
-        <!-- The Modal -->
-        <div data-id=${c.id} id="myModal" class="modal-card">
+            <!-- The Modal -->
+            <div data-id=${c.id} id="myModal" class="modal-card">
 
-          <!-- Modal content -->
-          <div class="modal-content-card">
-          <span class="close">&times;</span>
-          <div id='info'>
-            <p></p>
-          </div>
-        </div>
+              <!-- Modal content -->
+              <div class="modal-content-card">
+              <span class="close">&times;</span>
+              <div id='info'>
+                <p></p>
+              </div>
+            </div>
 
         </div>
       </div>
@@ -370,24 +387,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // MORE INFO MODAL
     return `
-    <h1>Collab name: ${c.name}</h1>
+    <h1>Collab Name: ${c.name}</h1>
     <br>
     <div class='mother-div'>
     <div id='collab-image'>
-      <img class='more-info-images' src=${c.image} alt="..." height=auto width=auto>
+      <img class='more-info-images img-fluid' src=${c.image} alt="...">
     </div>
     <div id='collab-people'>
-      <p><b>Rappers</b>: ${rappers.length > 0 ? rappers : 'None'}</p>
-      <p><b>Singers</b>: ${singers.length > 0 ? singers : 'None'}</p>
-      <p><b>Guitars</b>: ${guitars.length > 0 ? guitars : 'None'}</p>
-      <p><b>Drummers</b>: ${drummers.length > 0 ? drummers : 'None'}</p>
-      <p><b>Basses</b>: ${basses.length > 0 ? basses : 'None'}</p>
-      <p><b>Keyboards</b>: ${keyboards.length > 0 ? keyboards : 'None'}</p>
-      <p><b>Beatboxers</b>: ${beatboxers.length > 0 ? beatboxers : 'None'}</p>
-      <p><b>Producers</b>: ${producers.length > 0 ? producers : 'None'}</p>
+      <div>
+        <p><b>Rappers 🎙</b>: ${rappers.length > 0 ? rappers : 'None'}</p>
+        <p><b>Singers 🎤</b>: ${singers.length > 0 ? singers : 'None'}</p>
+        <p><b>Guitars 🎸</b>: ${guitars.length > 0 ? guitars : 'None'}</p>
+        <p><b>Drummers 🥁</b>: ${drummers.length > 0 ? drummers : 'None'}</p>
+        <p><b>Basses 🐟</b>: ${basses.length > 0 ? basses : 'None'}</p>
+        <p><b>Keyboards 🎹</b>: ${keyboards.length > 0 ? keyboards : 'None'}</p>
+        <p><b>Beatboxers 🎵</b>: ${beatboxers.length > 0 ? beatboxers : 'None'}</p>
+        <p><b>Producers 🎧</b>: ${producers.length > 0 ? producers : 'None'}</p>
+      </div>
     </div>
     <div id='button-form'>
-      <button data-id=${c.id} id='join-request'>Request to join</button>
+      <button class='btn btn-outline-danger' data-id=${c.id} id='join-request'>Request to join</button>
     </div>
     </div>`
   }
@@ -421,5 +440,14 @@ document.addEventListener('DOMContentLoaded', () => {
     </form>`
   }
 
+  // add event listener on search input
+  function captureSearch(collabs) {
+    return search.addEventListener('input', e => {
+      console.log(e.target.value);
+      let searchTerm = e.target.value
+      let filtered = collabs.filter(c => c.name.toUpperCase().includes(searchTerm.toUpperCase()))
+      renderAllCollabs(filtered)
+    })
+  }
 
 }) // end of DOMContentLoaded

@@ -1,6 +1,7 @@
 #collab-container {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 2rem !important
 }
 
 /* The Modal (background) */
@@ -46,6 +47,7 @@
   padding: 20px;
   border: 1px solid #888;
   width: 60%; /* Could be more or less, depending on screen size */
+  border-radius: 10px;
   /* widt«h: auto; */
 }
 
@@ -78,25 +80,62 @@
   }
 }
 
-.more-info-images {
+/* .more-info-images {
   border-radius: 10px;
   max-width: 80%;
   height: auto;
-
-}
+  margin-left: 40px;
+} */
 
 .card-img-top {
-  border-radius: 10px;
+  border-radius: 7px !important
 }
 
 .card {
   margin-bottom: 2rem !important
 }
 
-#card-deck {
-  margin: 2rem !important
+#video-container {
+  margin: 0;
+  background-color: pink;
 }
 
-.video-container {
-  margin: 0
+body {
+  background-color: #adb5bd !important
+}
+
+ul {
+  padding-left: 0;
+}
+
+#join-request {
+  margin-top: 25px;
+}
+
+#button-form {
+  display: flex;
+  justify-content: center;
+}
+
+/* #collab-image {
+  display: flex;
+  justify-content: center;
+} */
+
+.more-info-images {
+  padding: 0 30px;
+  border-radius: 10px !important
+}
+
+#collab-people {
+  /* margin-left: 120px;
+  margin-top: 15px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+ }
+
+#button-form {
+  margin: 30px;
 }
