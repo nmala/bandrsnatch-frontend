@@ -9,15 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   dropdownNavBar.innerHTML = newSpecials(2)
   search.style.display = 'none'
 
-  // STRETCH GOAL - IMAGE RENDER DURING NEW COLLAB FORM
-  // let newCollabImage = document.querySelector('#image')
-  // if (newCollabImage !== null) {
-  //   newCollabImage.addEventListener('input', e => {
-  //     const newCollabInfo = document.querySelector('#newCollabInfo')
-  //     newCollabInfo.innerHTML += `<img class='more-info-images' src=${e.target.value}>`
-  //     console.log(e.target.value);
-  //   })
-  // }
 
   collabContainer.addEventListener('click', e => {
     if (e.target.tagName === 'BUTTON') {
@@ -75,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const info = modal.querySelector('#newCollabInfo')
 
       // When the user clicks on the button, open the modal
-        modal.style.display = "block";
+      modal.style.display = "block";
 
       // When the user clicks on <span> (x), close the modal
       span.onclick = function() {
@@ -92,25 +83,40 @@ document.addEventListener('DOMContentLoaded', () => {
       // render new collab form
       info.innerHTML = `
       <div>
+        <h1> Create a New Collab </h1>
+        <hr>
         <form  id='new-collab-form' method="post">
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text" id="inputGroup-sizing-default">Collab Name</span>
             </div>
-            <input type="text" id='name' class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            <input type="text" id='name' class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
           </div>
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text" id="inputGroup-sizing-default">Image</span>
             </div>
-            <input type="text" id='image' class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            <input type="text" id='image' class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
           </div>
           <div>
             ${newSpecials(1)}
           </div>
           <input type='submit' class='btn btn-outline-danger collab-buttons' value='Create Collab'></input>
         </form>
+      </div>
+      <div id='image-preview'>
       </div>`
+
+      // STRETCH GOAL - IMAGE RENDER DURING NEW COLLAB FORM
+      let newCollabImage = document.querySelector('#image')
+      console.log(newCollabImage)
+      newCollabImage.addEventListener('input', e => {
+          const newCollabInfo = document.querySelector('#newCollabInfo')
+          document.querySelector('#image-preview').innerHTML = `<img class='more-info-images' src=${e.target.value} width='80%' height='auto'>`
+          console.log(e.target.value);
+        })
+   // end of while loop
+
     }
 
 
@@ -160,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let specNum = parseInt(neededSpec.innerText.split(':')[1])
       let updatedSpecNum = specNum - 1
 
-      console.log(specNum);
+      console.log(name, email, location, specialty);
 
       fetch('http://localhost:3000/api/v1/users', {
         method: "POST",
@@ -250,10 +256,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (x === 1) {
       return arr.map(spec =>{
           return `
-          <select class='custom-select' id=${spec}>
-          <option selected>${spec}</option>
-           ${specNumerales(spec)}
-          </select><br><br>`
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="inputGroupSelect01">${spec}</label>
+            </div>
+            <select class="custom-select" id=${spec}>
+              ${specNumerales(spec)}
+            </select>
+          </div>
+          `
       }).join('')
     } else if (x === 2) {
       return arr.map(spec => {
@@ -418,25 +429,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     return `
     <form data-id=${id} id='join-form' method="post">
-      <div>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="user_name" required>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroup-sizing-default">Name</span>
+        </div>
+        <input type="text" id='name' class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
       </div>
-      <div>
-        <label for="mail">E-mail:</label>
-        <input type="email" id="email" name="user_email" required>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroup-sizing-default">Email</span>
+        </div>
+        <input type="email" id='email' class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
       </div>
-      <div>
-        <label for="location">City:</label>
-        <input id="location" name="user_location"></input required>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="inputGroup-sizing-default">Location</span>
+        </div>
+        <input type="text" id='location' class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
       </div>
-      <div>
-        <label for="specialty">Specialty:</label>
-        <select id='specialty'>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01">Specialty</label>
+        </div>
+        <select class="custom-select" id='specialty'}>
           ${dropdown}
         </select>
       </div>
-      <input type='submit'></input>
+      <input class='btn btn-outline-danger' type='submit'></input>
     </form>`
   }
 

@@ -93,7 +93,12 @@
 
 .card {
   margin-bottom: 2rem !important
+  /* transition: transform 1s !important */
 }
+
+/* .card:hover {
+  transform: scale(.9);
+} */
 
 #video-container {
   margin: 0;
@@ -117,10 +122,6 @@ ul {
   justify-content: center;
 }
 
-/* #collab-image {
-  display: flex;
-  justify-content: center;
-} */
 
 .more-info-images {
   padding: 0 30px;
