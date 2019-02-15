@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log(newCollabImage)
       newCollabImage.addEventListener('input', e => {
           const newCollabInfo = document.querySelector('#newCollabInfo')
-          document.querySelector('#image-preview').innerHTML = `<img class='more-info-images' src=${e.target.value} width='80%' height='auto'>`
+          document.querySelector('#image-preview').innerHTML = `<img src=${e.target.value} width='80%' height='auto'>`
           console.log(e.target.value);
         })
    // end of while loop
@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // MAIN CARD MODAL
     return `
-    <div class="card shadow p-3 mb-5 bg-white rounded">
+    <div class="card shadow p-3 mb-5 bg-white rounded hvr-grow">
       <img src=${c.image} class="card-img-top" alt="...">
       <div class="card-body">
         <h3 class="card-title">${c.name}</h3>
@@ -356,7 +356,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
           <p class="card-text"><small class="text-muted">Last signup: ${lastUpdated}</small></p>
           <!-- Trigger/Open The Modal -->
-          <button class='btn btn-outline-danger collab-buttons' data-id=${c.id} id="myBtn">More info</button>
+
+            <button class='btn btn-outline-danger collab-buttons' data-id=${c.id} id="myBtn">More info</button>
+
 
             <!-- The Modal -->
             <div data-id=${c.id} id="myModal" class="modal-card">
@@ -402,8 +404,8 @@ document.addEventListener('DOMContentLoaded', () => {
     <h1>Collab Name: ${c.name}</h1>
     <br>
     <div class='mother-div'>
-    <div id='collab-image'>
-      <img class='more-info-images img-fluid' src=${c.image} alt="...">
+    <div id='collab-image-div'>
+      <img id='collab-image' class='more-info-images img-fluid' src=${c.image} alt="...">
     </div>
     <div id='collab-people'>
       <div>

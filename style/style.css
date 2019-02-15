@@ -128,6 +128,11 @@ ul {
   border-radius: 10px !important
 }
 
+#collab-image {
+  /* border-radius: 10px !important */
+
+}
+
 #collab-people {
   /* margin-left: 120px;
   margin-top: 15px; */
@@ -139,4 +144,18 @@ ul {
 
 #button-form {
   margin: 30px;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 16pt !important;
+}
+
+h3 {
+  font-family: 'Monoton' !important;
+  font-size: 24pt !important;
+}
+
+* {
+  font-family: 'Montserrat', sans-serif !important
 }
