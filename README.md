@@ -31,7 +31,7 @@ The form also provides a live image preview pending a URL input in the 'Image' f
 
 ## Sort by Specialty
 
-'Sort by Specialty'
+'Sort by Specialty' in the navbar is a dropdown with each of the specialties we defined. Selecting one of them sorts all of the current collabs in decreasing order of collabs with the most vacancies of that specialty. For example, selecing 'Drummers' will order the collabs to show those with the most drummer seats to fill first.
 
 ## Search
 
