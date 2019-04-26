@@ -13,6 +13,8 @@ Band ‘Я’ Snatch is a platform for rappers, drummers, bassists, singers, key
 
 The name Band ‘Я’ Snatch is a play on Netflix's Black Mirror episode, which was all the hype when we were working on this project. The pun seemed to fit our purpose.
 
+All images are our classmates and instructors from Flatiron School, and collab names and users are generated using the Ruby Faker gem.
+
 # Features
 
 ## All Collabs
