@@ -2,7 +2,10 @@
 
 A classifieds platform for musicians looking for collaborations.
 
-Created by Marcus Plenty and Nison Malayev. </br>
+Created by Marcus Plenty and Nison Malayev.
+
+[Demo](https://delivr.com/23xvx)
+
 [Backend Repo](https://github.com/nmala/bandrsnatch-backend)
 
 # Concept
