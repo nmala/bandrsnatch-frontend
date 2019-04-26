@@ -7,43 +7,40 @@ Created by Marcus Plenty and Nison Malayev. </br>
 
 # Concept
 
-My wife and I had our first babyin 2018, and with the baby came hundreds of photos and videos of our special memories. We had no easy way to organize these memories - there are hashtags, tags in Google Photos, albums, scrapbooks, baby logs, etc. We also wanted to incorporate a way for our child to look back on these special memories as she gets older. Some brainstorming produced this project - Kinder Memories.
+We tried our skills at building a frontend completely from vanilla JavaScript with a Rails API backend. Being that we're both interested in music production, we thought it would be a cool idea to develop a classfieds platform for musicians looking for collaborations. Users can browse all collabs requiring specific talents, and request to join. We envisioned the service to work by sending an email to the original collab poster with the join requests and for conversations to spark.
 
-Kinder Memories is a double entendre - 'kinder' as in loving and warm, and 'kinder' for the German word for children.
+Band ‘Я’ Snatch is a platform for rappers, drummers, bassists, singers, keyboardists, guitarists, producers, and beatboxers.
+
+The name Band ‘Я’ Snatch is a play on Netflix's Black Mirror episode, which was all the hype when we were working on this project. The pun seemed to fit our purpose.
 
 # Features
 
-## Timeline
+## All Collabs
 
-The main feature is the timeline. It has alternating cards with the date of the memory and an icon denoting its memory type on the center timeline stalk. Each timeline card has a title, description, memory, age (calculated via the memory date), and a footer with who posted the memory and when.
+The main page of the site featuring all current collabs. Each collab posting includes an image, title, how many of each artist is needed, the last sign-up, and a 'More info' button that opens a modal with more information.
 
-## Full auth with auto-login
+The modal lists the names of artists who have joined the collab, and a button to request to join. The request form includes a specialty dropdown which is dynamically created for each collab depending on which specialties were chosen for the collab and how many of each. The dropdown updates with only those specialties with vacancies.
 
-Users can sign up, login, and be auto-logged in upon returning to the web app.
+## New Collab
 
-## Filter and Sort
+Click on 'New Collab' in the navbar opens a model allowing users to post a new collab. The form requires a name, image, and a selection of how many of each specialty is desired.
 
-At the top of the timeline is a filter and sort bar. Users can the timeline by the relation of the poster, whether it be a grandparent, a sibling, or a cousin. Another layer of filtering is by type of memory post: photo, video, or letter.
+The form also provides a live image preview pending a URL input in the 'Image' field.
 
-I've also implemented a way to swap whether the timeline posts load chronologically or reverse-chronologically.
+## Sort by Specialty
 
-These three layers allow for fine tuning of how the timeline renders. For example, a user can view all video posts by grandparents in reverse chronological order.
+'Sort by Specialty'
 
-## Add New Memory
+## Search
 
-Users can add a new memory in the form of a photo, video, or letter. Depending on the choice, the form renders a text area for the letter or a file upload button.
+Users can search by collab title, and the collab postings update live as the search term is entered.
 
 # Stack
 
 - Ruby on Rails with Postgres - backend API
-- Active Storage - file uploads
-- React - for UI
-- Vanilla JavaScript - for some of the timeline card functionality
-- CodyHouse Library - inspired the design and functionality
-- MomentJS - to standardize between Ruby and HTML date formats for use in calculations
-- React-Router - for dynamic client-side routing and better UX
-- Semantic UI React - for styling
-- JWT and Bcrypt - to build auth
+- Vanilla JavaScript - UI & functionality
+- Bootstrap and custom CSS - styling
+- Faker Gem - random collab names and users
 
 # Additional Notes
 
